@@ -37,73 +37,73 @@
 
 *************************************************** **/
 
-	// init countdown
-	var countdown_time 		= jQuery("#countdown-widget").data('time');
-	var countdown_timezone 	= jQuery("#countdown-widget").data('timezone');
-	
-	if(countdown_time != '') {
+// init countdown
+var countdown_time = jQuery("#countdown-widget").data('time');
+var countdown_timezone = jQuery("#countdown-widget").data('timezone');
 
-		launchTime = new Date(Date.parse(countdown_time));
+if (countdown_time != '') {
 
+	launchTime = new Date(Date.parse(countdown_time));
+
+} else {
+
+	launchTime = new Date(); 						// Set launch: [year], [month], [day], [hour]...
+	launchTime.setDate(launchTime.getDate() + 15); 	// Add 15 days
+
+}
+
+if (countdown_timezone == '')
+	countdown_timezone = null;
+
+jQuery("#countdown-widget").countdown({
+	until: launchTime,
+	format: "dHMS",
+	labels: ['', '', '', '', '', '', ''],
+	digits: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+	timezone: countdown_timezone,
+
+	labels: ['Years', 'Months', 'Weeks', 'Days', 'Hours', 'Minutes', 'Seconds'],
+	labels1: ['Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Seconduy'],
+});
+
+
+// Video Background
+if (jQuery().mb_YTPlayer && jQuery("#countdown").length > 0) {
+
+	var disableMobile = false;
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+		disableMobile = true;
+	}
+
+	if (disableMobile === false) {
+
+		jQuery(".player").mb_YTPlayer();
+
+		jQuery("#video-volume").bind("click", function (e) {
+			e.preventDefault();
+
+			jQuery('#YTPlayer').toggleVolume();
+		});
+
+		// audio control
+		jQuery("#video-volume").bind("click", function () {
+			if (jQuery('i.fa', this).hasClass('fa-volume-down')) {
+				jQuery('i.fa', this).removeClass('fa-volume-down');
+				jQuery('i.fa', this).removeClass('fa-volume-up');
+				jQuery('i.fa', this).addClass('fa-volume-up');
+			} else {
+				jQuery('i.fa', this).removeClass('fa-volume-up');
+				jQuery('i.fa', this).removeClass('fa-volume-v');
+				jQuery('i.fa', this).addClass('fa-volume-down');
+			}
+		});
+
+		jQuery("#slider").fadeOut(500);
 	} else {
 
-		launchTime = new Date(); 						// Set launch: [year], [month], [day], [hour]...
-		launchTime.setDate(launchTime.getDate() + 15); 	// Add 15 days
+		jQuery(".player , #video-volume").hide();
+		jQuery("#slider").fadeIn(500);
 
 	}
 
-	if(countdown_timezone == '')
-		countdown_timezone = null;
-			
-	jQuery("#countdown-widget").countdown({
-		until: launchTime, 
-		format: "dHMS",
-		labels: ['','','','','','',''],
-		digits:['0','1','2','3','4','5','6','7','8','9'],
-		timezone: countdown_timezone,
-
-		labels: ['Years', 'Months', 'Weeks', 'Days', 'Hours', 'Minutes', 'Seconds'],
-		labels1: ['Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Seconduy'],
-	});
-
-
-	// Video Background
-	if(jQuery().mb_YTPlayer && jQuery("#countdown").length > 0) {
-
-		var disableMobile = false;
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) { 
-			disableMobile = true; 
-		}
-
-		if(disableMobile === false) {
-
-			jQuery(".player").mb_YTPlayer();
-
-			jQuery("#video-volume").bind("click", function(e) {
-				e.preventDefault();
-
-				jQuery('#YTPlayer').toggleVolume();
-			});
-
-			// audio control
-			jQuery("#video-volume").bind("click", function() {
-				if(jQuery('i.fa', this).hasClass('fa-volume-down')) {
-					jQuery('i.fa', this).removeClass('fa-volume-down');
-					jQuery('i.fa', this).removeClass('fa-volume-up');
-					jQuery('i.fa', this).addClass('fa-volume-up');
-				} else {
-					jQuery('i.fa', this).removeClass('fa-volume-up');
-					jQuery('i.fa', this).removeClass('fa-volume-v');
-					jQuery('i.fa', this).addClass('fa-volume-down');
-				}
-			});
-
-			jQuery("#slider").fadeOut(500);
-		} else {
-
-			jQuery(".player , #video-volume").hide();
-			jQuery("#slider").fadeIn(500);
-
-		}
-
-	}
+}
